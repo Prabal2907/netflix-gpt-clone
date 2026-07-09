@@ -3,6 +3,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import usermodel from "./usermodel.js";
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+};
+
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -55,8 +61,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // ab yeh dekhenge ki user exist krta hai ki nhi.. agr krta hai tab to badhiya nhi to marenge sale ko
-
     const existing_user = await usermodel.findOne({ email });
 
     if (!existing_user) {
@@ -66,7 +70,6 @@ export const login = async (req, res) => {
       });
     }
 
-    //ab password check krennge
     const pass_check = await bcrypt.compare(password, existing_user.password);
     if (!pass_check) {
       return res.status(404).json({
@@ -80,15 +83,12 @@ export const login = async (req, res) => {
       process.env.SECRET_KEY,
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,
-    });
+    res.cookie("token", token, cookieOptions); // 👈 yaha updated
 
     const user_to_return = {
-      name:existing_user.name,
-      email:existing_user.email
-    }
+      name: existing_user.name,
+      email: existing_user.email,
+    };
 
     return res.status(201).json({
       messsage: "User logged in",
@@ -106,7 +106,7 @@ export const login = async (req, res) => {
 
 export const get_profile = async (req, res) => {
   try {
-    const user_profile = await usermodel.findById(req.id); 
+    const user_profile = await usermodel.findById(req.id);
     if (!user_profile) {
       return res
         .status(404)
@@ -126,10 +126,13 @@ export const get_profile = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    return res.status(201).clearCookie("token").json({
-      message: "logged out successfully",
-      succss: true,
-    });
+    return res
+      .status(201)
+      .clearCookie("token", cookieOptions) // 👈 yaha bhi updated
+      .json({
+        message: "logged out successfully",
+        succss: true,
+      });
   } catch (err) {
     console.log(err);
     return res.status(400).json({
