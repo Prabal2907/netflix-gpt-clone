@@ -2,10 +2,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Menu } from "@headlessui/react";
 import { useDispatch } from "react-redux";
-import { removeUser } from "../utils/userSlice";
+import { removeUser } from "../utils/userSlice.js";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { toggleSearch } from "../utils/GptSlice";
+import { api } from "../utils/api.js";
+import { toggleSearch } from "../utils/GptSlice.js";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -16,8 +16,8 @@ const Header = () => {
   const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
 
   const handleSignOut = async () => {
-    await axios.post(
-      "http://localhost:5000/api/user/logout",
+    await api.post(
+      "/api/user/logout", 
       {},
       { withCredentials: true },
     );
@@ -44,7 +44,7 @@ const Header = () => {
             flex items-center gap-2 transition-colors duration-150 bg-slate-900 "
             onClick={handleGptSearchClick}
           >
-            {showGptSearch?"Homepage":"🔎GPT-Search"}
+            {showGptSearch ? "Homepage" : "🔎GPT-Search"}
           </button>
         </div>
       )}

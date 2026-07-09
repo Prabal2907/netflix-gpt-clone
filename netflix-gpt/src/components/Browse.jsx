@@ -20,24 +20,25 @@ import {
   addNowHighTv,
 } from "../utils/MovieSlice.js";
 import GptSearch from "./GptSearch.jsx";
+import { api } from "../utils/api.js"; 
 
 const Browse = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const FetchUser = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/user/profile", {
-        withCredentials: true,
-      });
-      dispatch(addUser(res.data.user_profile));
-    } catch (err) {
-      console.log("Invalid token");
-      dispatch(removeUser());
-      navigate("/");
-    }
-  };
 
+const FetchUser = async () => {
+  try {
+    const res = await api.get("/api/user/profile", {
+      withCredentials: true,
+    });
+    dispatch(addUser(res.data.user_profile));
+  } catch (err) {
+    console.log("Invalid token");
+    dispatch(removeUser());
+    navigate("/");
+  }
+};
   useEffect(() => {
     FetchUser();
   }, []);
