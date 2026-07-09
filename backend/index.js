@@ -16,7 +16,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://netflix-gpt-clone-dcwujqo7q-prabal2907s-projects.vercel.app",
+      "https://netflix-gpt-clone-tau.vercel.app",
     ],
     credentials: true,
   }),
