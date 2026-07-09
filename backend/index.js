@@ -12,12 +12,15 @@ connectDB();
 
 const app = express();
 
-const corsOption = {
-    origin: "http://localhost:3000",
-    credentials: true
-};
-
-app.use(cors(corsOption));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://netflix-gpt-clone-dcwujqo7q-prabal2907s-projects.vercel.app",
+    ],
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
