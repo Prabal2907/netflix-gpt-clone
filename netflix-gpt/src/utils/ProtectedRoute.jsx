@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import Browse from "../components/Browse";
 
 
 const ProtectedRoute = () => {

@@ -4,7 +4,6 @@ import { Menu } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
-import { api } from "../utils/api";
 import axios from "axios";
 import { toggleSearch } from "../utils/GptSlice";
 

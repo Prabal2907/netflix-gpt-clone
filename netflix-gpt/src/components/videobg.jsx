@@ -5,23 +5,23 @@ import { API_OPTIONS } from "../utils/api";
 const Videobg = ({ movieId }) => {
   const [trailerId, settrailerId] = useState(null);
 
-  const fetch_trailer = async () => {
-    if (!movieId) return;
-
-    const res = await axios.get(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
-      API_OPTIONS,
-    );
-
-    const real_res = res.data.results.filter(
-      (video) => video.type === "Trailer",
-    );
-
-    const trailer = real_res.length ? real_res[0] : res.data.results[0];
-    settrailerId(trailer.key);
-  };
-
   useEffect(() => {
+    const fetch_trailer = async () => {
+      if (!movieId) return;
+
+      const res = await axios.get(
+        `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
+        API_OPTIONS,
+      );
+
+      const real_res = res.data.results.filter(
+        (video) => video.type === "Trailer",
+      );
+
+      const trailer = real_res.length ? real_res[0] : res.data.results[0];
+      settrailerId(trailer.key);
+    };
+
     fetch_trailer();
   }, [movieId]);
 
